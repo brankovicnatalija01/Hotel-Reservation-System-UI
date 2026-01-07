@@ -84,13 +84,13 @@ const RoomSearch = () => {
               ? "Searching for rooms..."
               : `Found: ${rooms.length} rooms`}
             {/* Thin Solid Amber Line */}
-            <div className="h-1.25 w-full bg-linear-to-r from-transparent via-amber-200 mt-1 rounded-full" />
+            <div className="h-1.25 w-full bg-linear-to-r from-transparent via-amber-600 mt-1 rounded-full" />
           </h1>
         </div>
 
         {/* Room Results Grid */}
         {rooms.length > 0 ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {rooms.map((room) => (
               <RoomSearchCard
                 key={room.id}

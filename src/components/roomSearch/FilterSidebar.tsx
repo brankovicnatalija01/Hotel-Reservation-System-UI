@@ -29,7 +29,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
             Filters
           </h2>
         </div>
-        <div className="h-1.25 w-full bg-linear-to-r from-transparent via-amber-200 opacity-80" />
+        <div className="h-1.25 w-full bg-linear-to-r from-transparent via-amber-600 opacity-80" />
       </div>
       {/* Date Range Selection */}
       <div className="mb-10">
