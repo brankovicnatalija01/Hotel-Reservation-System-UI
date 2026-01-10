@@ -2,32 +2,58 @@ import type { ReviewRequest, ReviewResponse } from "../types/review";
 
 const BASE_URL = "http://localhost:8080/api/reviews";
 
-export const createReview = async (
-  reviewData: ReviewRequest
-): Promise<void> => {
+const apiRequest = async <T>(
+  url: string,
+  options: RequestInit = {}
+): Promise<T> => {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(BASE_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(reviewData),
-  });
+  const headers = new Headers(options.headers || {});
+  if (token) headers.set("Authorization", `Bearer ${token}`);
+  if (options.body) headers.set("Content-Type", "application/json");
+
+  const response = await fetch(url, { ...options, headers });
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || "Failed to submit review");
+    throw new Error(
+      errorData.message || `Request failed with status ${response.status}`
+    );
   }
-};
 
-export const getAllReviews = async (): Promise<ReviewResponse[]> => {
-  const response = await fetch(BASE_URL);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch reviews");
+  // Skip JSON parsing for DELETE requests or empty responses
+  if (
+    response.status === 204 ||
+    response.headers.get("content-length") === "0"
+  ) {
+    return {} as T;
   }
 
   return response.json();
 };
+
+export const createReview = (reviewData: ReviewRequest): Promise<void> =>
+  apiRequest(BASE_URL, {
+    method: "POST",
+    body: JSON.stringify(reviewData),
+  });
+
+export const getAllReviews = (): Promise<ReviewResponse[]> =>
+  apiRequest(BASE_URL);
+
+export const getUserReviews = (userId: string): Promise<ReviewResponse[]> =>
+  apiRequest(`${BASE_URL}/user/${userId}`);
+
+export const deleteReview = (reviewId: number): Promise<void> =>
+  apiRequest(`${BASE_URL}/${reviewId}`, {
+    method: "DELETE",
+  });
+
+export const updateReview = (
+  reviewId: number,
+  data: { rating: number; comment: string }
+): Promise<ReviewResponse> =>
+  apiRequest(`${BASE_URL}/${reviewId}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });

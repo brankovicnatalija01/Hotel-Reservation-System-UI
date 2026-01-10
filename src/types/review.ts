@@ -11,4 +11,6 @@ export interface ReviewResponse {
   userFirstName: string;
   userLastName: string;
   roomName: string;
+  roomType: string;
+  roomTypeDescription: string;
 }

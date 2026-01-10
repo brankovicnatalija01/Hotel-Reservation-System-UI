@@ -6,6 +6,7 @@ import {
   TreePine,
   LogOut,
   CalendarDays,
+  MessageSquare,
 } from "lucide-react";
 import LoginModal from "../components/modals/LoginModal";
 import RegisterModal from "../components/modals/RegisterModal";
@@ -137,6 +138,7 @@ const Navbar: React.FC = () => {
                       </p>
                     </div>
 
+                    {/* My Reservations */}
                     <button
                       onClick={() => {
                         navigate("/my-reservations");
@@ -146,6 +148,18 @@ const Navbar: React.FC = () => {
                     >
                       <CalendarDays size={18} className="text-amber-600" />
                       <span className="font-medium">My Reservations</span>
+                    </button>
+
+                    {/* My Reviews */}
+                    <button
+                      onClick={() => {
+                        navigate("/my-reviews");
+                        setIsDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-amber-50 hover:text-amber-700 transition-colors"
+                    >
+                      <MessageSquare size={18} className="text-amber-600" />
+                      <span className="font-medium">My Reviews</span>
                     </button>
                   </div>
                 )}
@@ -158,7 +172,7 @@ const Navbar: React.FC = () => {
       <LoginModal
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
-        onSwitchToRegister={openRegisterAndCloseLogin} // Prosleđuješ funkciju
+        onSwitchToRegister={openRegisterAndCloseLogin}
       />
 
       <RegisterModal
